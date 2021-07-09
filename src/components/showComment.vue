@@ -3,9 +3,10 @@
     :key="comment.commentId">
         <a href="#">{{comment.userName}}</a>&nbsp;
         <a href="#">{{comment.date}}</a>&nbsp;
-        <a href="#" v-on:click="showSubContent(comment.commentId)">[ - ]</a>
+        <a href="#" v-if="!showSub[comment.commentId] && comment.replyComments.length != 0" v-on:click="showSubContent(comment.commentId)">[ {{comment.replyComments.length}} more ]</a>
+        <a href="#" v-if="showSub[comment.commentId]" v-on:click="showSubContent(comment.commentId)">[ - ]</a>
         <p>{{comment.content}}&nbsp;<button v-on:click="showReplyComponent(comment.commentId)">reply</button></p>
-        <div style="margin-left:80px">
+        <div style="margin-left:80px" v-if="showSub[comment.commentId]">
             <show-comment v-if="comment.replyComments.length != 0" :comments="comment.replyComments" :userName="userName"></show-comment>
         </div>    
     </div>
@@ -33,13 +34,20 @@ export default {
             commentId: null,
             replyComponentShow: false,
             commentsList: [],
-            show: true
+            showSub: {},
+            subNumber: {}
+            /*showSub: {
+                comment1: false
+                comment2: false
+            }
+            */
         }
     },
     async created() {
         for (const item of this.comments) {
             let temp = await JSON.parse(localStorage.getItem(item));
             this.commentsList.push(temp);
+            this.showSub[item] = false;
         }
     },
     methods: {
@@ -50,8 +58,9 @@ export default {
         cancel (res) {
             this.replyComponentShow = res;
         },
-        showSubContent (){
-
+        showSubContent (commentId){
+            this.showSub[commentId] = this.showSub[commentId] ? false : true;
+            // console.log(this.showSub);
         }
     }
 }
