@@ -41,9 +41,9 @@ export default {
                 pId: Number,
                 commentId: Number,
                 userName: String,
-                commentContent: String,
+                content: String,
                 date: Date,
-                reply:[commentId]
+                replyComments:[commentId]
             }
         }
         */
@@ -62,13 +62,11 @@ export default {
             this.comments.commentId = "comment" + (news.commentsNumber + 1);
             data.replyComments.push(this.comments.commentId);    //父节点中添加子节点的id
             news.commentsNumber = news.commentsNumber+1;         //总的回复数+1
-            // console.log(data.commentsNumber)
             await localStorage.setItem(data.newsId, JSON.stringify(news));
             await localStorage.setItem(this.commentId,JSON.stringify(data));
             await localStorage.setItem(this.comments.commentId,JSON.stringify(this.comments));
             this.reload();
         },
-
         cancel() {
             this.$emit('cancel', this.replyComponentShow)
         }

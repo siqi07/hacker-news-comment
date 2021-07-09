@@ -58,14 +58,12 @@ export default({
     methods: {
         async submit() {
             let data = await JSON.parse(localStorage.getItem(this.newsId));
-            // console.log(data);
             this.comments.newsId = this.newsId;
             this.comments.userName = this.userName;
             this.comments.date = new Date();
             this.comments.commentId = "comment" + (data.commentsNumber + 1);
             data.comments.push(this.comments.commentId);
             data.commentsNumber = data.commentsNumber+1;
-            // console.log(data.commentsNumber)
             await localStorage.setItem(this.newsId, JSON.stringify(data));
             await localStorage.setItem(this.comments.commentId,JSON.stringify(this.comments));
             this.reload();

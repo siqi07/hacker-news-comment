@@ -1,21 +1,17 @@
 <template>
-  <!-- <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/> -->
   <news v-if="isRouterAlive"></news>
 </template>
 
 <script>
-// import HelloWorld from './components/HelloWorld.vue'
 import News from './components/news.vue'
 
 export default {
   name: 'App',
   components: {
-    // HelloWorld
     News
   },
   created() {
-    /* 第一次运行是启用，添加news的初始数据
+    /* 第一次运行时启用，添加news的初始数据
     let data = {
       content: "this is new1",
       comments: [],
@@ -23,13 +19,6 @@ export default {
     };
     localStorage.setItem('news1',JSON.stringify(data));
     */
-  //  let data = {
-  //     content: "this is new1",
-  //     comments: [],
-  //     commentsNumber: 0
-  //   };
-  //   localStorage.setItem('news1',JSON.stringify(data));
-
   },
   provide() {
     return {

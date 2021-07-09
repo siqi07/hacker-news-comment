@@ -34,9 +34,9 @@ export default {
             commentId: null,
             replyComponentShow: false,
             commentsList: [],
-            showSub: {},
-            subNumber: {}
-            /*showSub: {
+            showSub: {}
+            /*
+            showSub: {
                 comment1: false
                 comment2: false
             }
@@ -60,7 +60,6 @@ export default {
         },
         showSubContent (commentId){
             this.showSub[commentId] = this.showSub[commentId] ? false : true;
-            // console.log(this.showSub);
         }
     }
 }
