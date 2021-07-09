@@ -1,18 +1,53 @@
 <template>
   <!-- <img alt="Vue logo" src="./assets/logo.png">
   <HelloWorld msg="Welcome to Your Vue.js App"/> -->
-  <comment-page></comment-page>
+  <news v-if="isRouterAlive"></news>
 </template>
 
 <script>
 // import HelloWorld from './components/HelloWorld.vue'
-import CommentPage from './components/commentPage.vue'
+import News from './components/news.vue'
 
 export default {
   name: 'App',
   components: {
     // HelloWorld
-    CommentPage
+    News
+  },
+  created() {
+    /* 第一次运行是启用，添加news的初始数据
+    let data = {
+      content: "this is new1",
+      comments: [],
+      commentsNumber: 0
+    };
+    localStorage.setItem('news1',JSON.stringify(data));
+    */
+  //  let data = {
+  //     content: "this is new1",
+  //     comments: [],
+  //     commentsNumber: 0
+  //   };
+  //   localStorage.setItem('news1',JSON.stringify(data));
+
+  },
+  provide() {
+    return {
+      reload: this.reload
+    }
+  },
+  data() {
+    return {
+      isRouterAlive: true
+    }
+  },
+  methods: {
+    reload() {
+      this.isRouterAlive = false;
+      this.$nextTick(function () {
+        this.isRouterAlive = true;
+      })
+    }
   }
 }
 </script>

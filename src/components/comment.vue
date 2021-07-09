@@ -1,7 +1,7 @@
 <template>
     <div>评论功能</div>
     <form id="comment" method="POST">
-        <textarea name="comment" v-model="comments.commentContent"></textarea>
+        <textarea name="comment" v-model="comments.content"></textarea>
         <input type="button" value="add comment" v-on:click="submit()">
     </form>
 </template>
@@ -18,63 +18,57 @@ export default({
             required: true
         }
     },
+    inject: ['reload'],
     data() {
         return {
             comments: {
-                pId: 0,
+                newsId: null,
+                pId: 'comment0',
                 commentId: 0,
                 userName: null,
                 date: null,
-                commentContent: null,
+                content: null,
                 replyComments: []
             }
-            /*
+             /*
             数据结构
-            key:newsId
-            value: {
-                content: String,
-                comments: [{
-                    pId: Number,
-                    commentId: Number,
-                    userName: String,
-                    commentContent: String,
-                    date: Date,
-                    reply:[{
-                        pId: Number
-                        commentId: Number,
-                        userName: String,
-                        commentContent: String,
-                        date: Date,
-                    }]
-                },
-                {
-                    pId: Number,
-                    commentId: Number,
-                    userName: String,
-                    commentContent: String,
-                    date: Date,
-                    reply:[{
-                        pId: Number
-                        commentId: Number,
-                        userName: String,
-                        commentContent: String,
-                        date: Date,
-                    }]
-                }]
+            {
+                key:newsId
+                value: {
+                    content: String,
+                    comments: [commentId]
+                }
             }
+            {
+                key:commentId
+                value: {
+                    newsId: Number,
+                    pId: Number,
+                    commentId: Number,
+                    userName: String,
+                    commentContent: String,
+                    date: Date,
+                    reply:[commentId]
+                }
+            }
+
         */
         }
     },
     methods: {
-        submit() {
-            let data = JSON.parse(localStorage.getItem(this.newsId));
+        async submit() {
+            let data = await JSON.parse(localStorage.getItem(this.newsId));
+            // console.log(data);
+            this.comments.newsId = this.newsId;
             this.comments.userName = this.userName;
             this.comments.date = new Date();
-            this.comments.commentId = data.commentsNumber + 1;
-            data.comments.push(this.comments);
+            this.comments.commentId = "comment" + (data.commentsNumber + 1);
+            data.comments.push(this.comments.commentId);
             data.commentsNumber = data.commentsNumber+1;
             // console.log(data.commentsNumber)
-            localStorage.setItem(this.newsId, JSON.stringify(data));
+            await localStorage.setItem(this.newsId, JSON.stringify(data));
+            await localStorage.setItem(this.comments.commentId,JSON.stringify(this.comments));
+            this.reload();
         }
     }
 })
